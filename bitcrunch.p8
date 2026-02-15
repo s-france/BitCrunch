@@ -3,8 +3,10 @@ version 42
 __lua__
 function _init()
 	cartdata("bitcruncher")
-	high_score = dget(1)
-	
+	high_score = dget(0)
+	leaderboard = {}
+	load_leaderboard()
+
 	
 	//reset high score
 	//dset(1,0)
@@ -24,6 +26,8 @@ function init_title()
 	score = 0
 	spawnrate = 0
 	display_score = 0
+	load_leaderboard()
+
 	//play music
 	//music(0)
 end
@@ -61,6 +65,9 @@ function _draw()
 	else
 		draw_title_screen()
 	end
+	
+	
+	print(leaderboard[0].name)
 	
 	//print((tick%spawnrate)/spawnrate)	
 	--[[
@@ -355,7 +362,9 @@ function start_game()
 	started = true
 	game_over = false
 	game_grid = init_grid(7,12)
-	
+	load_leaderboard()
+
+
 	clear_rows = {}
 	
 	danger = false
@@ -494,7 +503,7 @@ function end_game()
 	
 	if score > high_score then
 		high_score = score
-		dset(1,high_score)
+		dset(0,high_score)
 	end
 	
 	game_over = true
@@ -1258,13 +1267,13 @@ end
 //leaderboard
 leader_entry = false
 
-//score struct = {}
+//score entry struct = {}
 	//idx goes 0-9
-	//.rank = dget(idx)
-	//.score = dget(idx+1)
-	//.name = dget(idx+2)
-	//								dget(idx+3)
-	//								dget(idx+4)
+	//.rank = idx
+	//.score = dget(idx*4)
+	//.name = dget((idx*4)+1)
+	//								dget((idx*4)+2)
+	//								dget((idx*4)+3)
 
 function save_score(entry)
 	//exit if not on leaderboard
@@ -1276,25 +1285,53 @@ function save_score(entry)
 	local comp = load_score(idx)
 	//loop through leaderboard to find placement
 	while comp.score >= entry.score do
-		
-		
 		idx +=1
+		comp = load_score(idx)
 	end
 	
+	//insert entry at idx
+	//save score
+	dset(idx*4, entry.score)
+	//save name chars
+	local n1,n2,n3 = ord(entry.name, 1,3)
+	dset((idx*4)+1, n1)
+	dset((idx*4)+2, n2)
+	dset((idx*4)+3, n3)
 	
-	
-	
+	//move lower entries down
+	while idx <10 do
+		idx+=1
+		//grab entry at current idx
+		local temp = load_score(idx)
+		
+		//replace current idx with comp
+		dset(idx*4, comp.score)
+		local n1,n2,n3 = ord(comp.name, 1,3)
+		dset((idx*4)+1, n1)
+		dset((idx*4)+2, n2)
+		dset((idx*4)+3, n3)
+		
+		comp = temp
+	end
 end
 
 function load_score(idx)
 	local entry = {}
-	entry.rank = idx*4
-	entry.score = dget(idx)
-	entry.name = chr(dget(idx+1))
-												..chr(dget(idx+2))
-												..chr(dget(idx+3))
+	entry.rank = idx
+	entry.score = dget(idx*4)
+	entry.name = chr(dget((idx*4)+1))
+												..chr(dget((idx*4)+2))
+												..chr(dget((idx*4)+3))
 	
 	return entry
+end
+
+
+function load_leaderboard()
+	leaderboard = {}
+	for idx=0, 9 do
+		leaderboard[idx] = load_score(idx)
+	end
 end
 __gfx__
 0000000000000000006666000007700000111100000110006600000000999900000aa00000066006600060000006600660006000000660066000600000000000
