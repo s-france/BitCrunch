@@ -25,7 +25,7 @@ function init_title()
 	spawnrate = 0
 	display_score = 0
 	//play music
-	//music(0)
+	music(0)
 end
 
 
@@ -1253,48 +1253,6 @@ function draw_end_screen()
 	
 	print("❎:replay", 30,73, 12)
 	print("🅾️:exit",44,80, -8)
-end
--->8
-//leaderboard
-leader_entry = false
-
-//score struct = {}
-	//idx goes 0-9
-	//.rank = dget(idx)
-	//.score = dget(idx+1)
-	//.name = dget(idx+2)
-	//								dget(idx+3)
-	//								dget(idx+4)
-
-function save_score(entry)
-	//exit if not on leaderboard
-	if entry.score < load_score(9) then
-		return
-	end
-	
-	local idx = 0
-	local comp = load_score(idx)
-	//loop through leaderboard to find placement
-	while comp.score >= entry.score do
-		
-		
-		idx +=1
-	end
-	
-	
-	
-	
-end
-
-function load_score(idx)
-	local entry = {}
-	entry.rank = idx*4
-	entry.score = dget(idx)
-	entry.name = chr(dget(idx+1))
-												..chr(dget(idx+2))
-												..chr(dget(idx+3))
-	
-	return entry
 end
 __gfx__
 0000000000000000006666000007700000111100000110006600000000999900000aa00000066006600060000006600660006000000660066000600000000000
