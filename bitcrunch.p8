@@ -937,7 +937,7 @@ function b_button()
 		elseif game_over then
 			init_title()
 		else
-			stop()
+			//stop()
 		end
 	end
 end
@@ -1232,9 +1232,13 @@ function draw_title_screen()
 	spr( 128, 8,32, 13,4)	
 	
 	//print menu buttons
-	print("high score:".."\^w\^t"..tostr(high_score), 40,65, 15)
-	print("❎:start game", 30,73, 12)
-	print("🅾️:exit",44,80, -8)
+	print("high score:", 24,66, 15)
+	print("\^w\^t"..tostr(high_score), 68,63,15)
+	
+	print("❎:start game", 30,75, 12)
+	
+	
+	//print("🅾️:exit",44,80, -8)
 	
 end
 
