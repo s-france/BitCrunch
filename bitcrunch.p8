@@ -1146,11 +1146,10 @@ end
 function draw_operator()
 	sp = 61 + frame.op*4
 	
-	spr(sp)
-	spr(sp, 90, 5, 4, 4)
+	spr(sp, 90, 3, 4, 4)
 	
 	sp = 7+frame.op*2
-	spr(sp, 103, 35,2,2)
+	spr(sp, 103, 32,2,2)
 end
 
 function draw_score()
